@@ -63,6 +63,7 @@ func InitMinFSConfig() (*AccessConfig, error) {
 	if err := os.MkdirAll(globalDBDir, 0777); err != nil {
 		return nil, err
 	}
+	MountTime = time.Now()
 	// Config doesn't exist create it based on environment values.
 	if _, err := os.Stat(globalConfigFile); err != nil {
 		if os.IsNotExist(err) {
@@ -105,7 +106,6 @@ func InitMinFSConfig() (*AccessConfig, error) {
 	if secretToken != "" {
 		ac.SecretToken = secretToken
 	}
-	MountTime = time.Now()
 	return ac, nil
 }
 
