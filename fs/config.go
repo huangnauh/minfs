@@ -24,6 +24,7 @@ import (
 	"os"
 	"path"
 	"strings"
+	"time"
 )
 
 // Config is being used for storge of configuration items
@@ -53,6 +54,8 @@ type AccessConfig struct {
 	SecretKey   string `json:"secretKey"`
 	SecretToken string `json:"secretToken"`
 }
+
+var MountTime time.Time
 
 // InitMinFSConfig - Initialize MinFS configuration file.
 func InitMinFSConfig() (*AccessConfig, error) {
@@ -102,6 +105,7 @@ func InitMinFSConfig() (*AccessConfig, error) {
 	if secretToken != "" {
 		ac.SecretToken = secretToken
 	}
+	MountTime = time.Now()
 	return ac, nil
 }
 

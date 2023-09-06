@@ -161,6 +161,10 @@ func (dir *Dir) storeFile(bucket *meta.Bucket, tx *meta.Tx, baseKey string, objI
 		if err != nil {
 			return err
 		}
+		t := objInfo.LastModified
+		if t.IsZero() {
+			t = MountTime
+		}
 		f = File{
 			dir:     dir,
 			Path:    baseKey,
@@ -169,10 +173,10 @@ func (dir *Dir) storeFile(bucket *meta.Bucket, tx *meta.Tx, baseKey string, objI
 			Mode:    dir.mfs.config.mode,
 			GID:     dir.mfs.config.gid,
 			UID:     dir.mfs.config.uid,
-			Chgtime: objInfo.LastModified,
-			Crtime:  objInfo.LastModified,
-			Mtime:   objInfo.LastModified,
-			Atime:   objInfo.LastModified,
+			Chgtime: t,
+			Crtime:  t,
+			Mtime:   t,
+			Atime:   t,
 			ETag:    objInfo.ETag,
 		}
 		if err = f.store(tx); err != nil {
@@ -197,18 +201,21 @@ func (dir *Dir) storeDir(bucket *meta.Bucket, tx *meta.Tx, baseKey string, objIn
 		if err != nil {
 			return err
 		}
+		t := objInfo.LastModified
+		if t.IsZero() {
+			t = MountTime
+		}
 		d = Dir{
-			dir:   dir,
-			Path:  baseKey,
-			Inode: seq,
-			Mode:  0770 | os.ModeDir,
-			GID:   dir.mfs.config.gid,
-			UID:   dir.mfs.config.uid,
-
-			Chgtime: objInfo.LastModified,
-			Crtime:  objInfo.LastModified,
-			Mtime:   objInfo.LastModified,
-			Atime:   objInfo.LastModified,
+			dir:     dir,
+			Path:    baseKey,
+			Inode:   seq,
+			Mode:    0770 | os.ModeDir,
+			GID:     dir.mfs.config.gid,
+			UID:     dir.mfs.config.uid,
+			Chgtime: t,
+			Crtime:  t,
+			Mtime:   t,
+			Atime:   t,
 		}
 		if err = d.store(tx); err != nil {
 			return err

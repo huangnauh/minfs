@@ -365,9 +365,13 @@ func (mfs *MinFS) Root() (fs.Node, error) {
 		mfs:  mfs,
 		Path: "",
 
-		UID:  mfs.config.uid,
-		GID:  mfs.config.gid,
-		Mode: os.ModeDir | 0750,
+		UID:     mfs.config.uid,
+		GID:     mfs.config.gid,
+		Mode:    os.ModeDir | 0750,
+		Atime:   MountTime,
+		Chgtime: MountTime,
+		Crtime:  MountTime,
+		Mtime:   MountTime,
 	}, nil
 }
 
